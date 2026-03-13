@@ -562,6 +562,109 @@
         #failureOverlay.flashing {
             animation: flashRed 0.08s !important;
         }
+
+        /* ── RESPONSIVE MÓVIL ── */
+        @media (max-width: 600px) {
+            .container {
+                padding: 12px;
+            }
+
+            /* Header: imagen más baja en pantalla angosta */
+            .header-img {
+                height: 140px;
+            }
+
+            .header-subtitle {
+                font-size: 10px;
+                letter-spacing: 1px;
+                padding: 8px 10px;
+            }
+
+            /* Info bar: una columna */
+            .info-bar {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+
+            /* Timer más pequeño */
+            .timer-display {
+                font-size: 48px;
+                letter-spacing: 1px;
+            }
+
+            .timer-label {
+                font-size: 12px;
+                letter-spacing: 2px;
+            }
+
+            .timer-section {
+                padding: 20px 15px;
+            }
+
+            /* Content section */
+            .content-section {
+                padding: 20px 15px;
+            }
+
+            /* Input + botón en columna */
+            .input-group {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+                padding: 14px;
+            }
+
+            input[type="text"] {
+                font-size: 16px;
+                letter-spacing: 2px;
+            }
+
+            .input-label {
+                font-size: 16px;
+            }
+
+            /* Etiqueta flotante más pequeña para que no se corte */
+            .input-section::before {
+                font-size: 8px;
+                letter-spacing: 1px;
+                white-space: normal;
+                text-align: center;
+                width: calc(100% - 20px);
+                left: 10px;
+                transform: none;
+            }
+
+            /* Panels: una columna */
+            .bottom-panels {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            /* Binario más pequeño */
+            .binary-display {
+                font-size: 18px;
+                letter-spacing: 4px;
+            }
+
+            /* Overlay de falla */
+            .failure-title {
+                font-size: 44px;
+                letter-spacing: 2px;
+            }
+
+            .failure-subtitle {
+                font-size: 14px;
+                letter-spacing: 1px;
+                padding: 0 15px;
+            }
+
+            .failure-detail {
+                font-size: 12px;
+                padding: 0 15px;
+            }
+        }
     </style>
 </head>
 <body>
