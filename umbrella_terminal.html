@@ -741,7 +741,7 @@
             if (password === CORRECT_CODE_ORIGINAL) {
                 showSuccess("PROTOCOLO 0 DESACTIVADO");
             } else if (password === CORRECT_CODE_NEW) {
-                showSuccess("✔ ACCESO CONCEDIDO");
+                showSuccess("✔ PROTOCOLO DESACTIVADO");
                 startHiddenCountdown();
             } else {
                 showError("✘ ACCESO DENEGADO");
@@ -908,7 +908,6 @@
         // Initialize
         startMainTimer();
         updateTimerDisplay();
-        inputElement.focus();
     </script>
 </body>
 </html>
