@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="es">
+    <!-- EL CODIGO ES 3081 -->
+    <!-- Representación binaria: 110000001001 -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UMBRELLA CORPORATION - SISTEMA CENTRAL DE CONTROL</title>
+    <!-- Fuentes: Bebas Neue (similar al tipo de Umbrella Corp) + Rajdhani (terminal industrial) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #030000;
+            color: #00ff9c;
+            font-family: 'Rajdhani', 'Courier New', monospace;
+            font-size: 15px;
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.15),
+                rgba(0, 0, 0, 0.15) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .biohazard-bg {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 300px;
+            color: #cc0000;
+            opacity: 0.1;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* HEADER */
+        header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 30px;
+            border: 2px solid #cc0000;
+            box-shadow: 0 0 30px rgba(204, 0, 0, 0.5);
+            background: #f0f0f0;
+            overflow: hidden;
+        }
+
+        /* Imagen a tamaño natural, centrada, sin recorte */
+        .header-img {
+            display: block;
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+            object-position: center 50%;
+        }
+
+        .header-subtitle {
+            width: 100%;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, rgba(20, 0, 0, 0.95), rgba(10, 0, 0, 1));
+            font-size: 20px;
+            color: #00ff9c;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        /* WARNING STRIPES */
+        .warning-stripes {
+            height: 20px;
+            background: repeating-linear-gradient(
+                45deg,
+                #cc0000,
+                #cc0000 10px,
+                #000000 10px,
+                #000000 20px
+            );
+            margin: 20px 0;
+            box-shadow: 0 0 15px rgba(204, 0, 0, 0.6);
+        }
+
+        /* INFO BAR */
+        .info-bar {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding: 15px;
+            border: 1px solid #00ff9c;
+            background: rgba(0, 20, 10, 0.5);
+            box-shadow: 0 0 10px rgba(0, 255, 156, 0.3);
+        }
+
+        .info-item {
+            padding: 10px;
+            border-left: 3px solid #cc0000;
+            background: rgba(20, 0, 0, 0.3);
+        }
+
+        .info-label {
+            font-size: 11px;
+            color: #cc0000;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            font-size: 14px;
+            color: #00ff9c;
+            font-weight: bold;
+        }
+
+        .system-clock {
+            font-size: 16px;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 2px;
+        }
+
+        /* MAIN TIMER */
+        .timer-section {
+            margin-bottom: 40px;
+            text-align: center;
+            padding: 30px;
+            border: 2px solid #cc0000;
+            background: linear-gradient(135deg, rgba(20, 0, 0, 0.6), rgba(10, 0, 0, 0.8));
+            box-shadow: 0 0 30px rgba(204, 0, 0, 0.4);
+        }
+
+        .timer-label {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 16px;
+            color: #00ff9c;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 15px;
+        }
+
+        .timer-display {
+            font-size: 72px;
+            font-weight: bold;
+            color: #cc0000;
+            text-shadow: 0 0 20px rgba(204, 0, 0, 0.8), 0 0 40px rgba(204, 0, 0, 0.5);
+            font-family: 'Courier New', monospace;
+            letter-spacing: 3px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* CONTENT SECTION */
+        .content-section {
+            padding: 30px;
+            border: 1px solid #00ff9c;
+            background: rgba(0, 20, 10, 0.3);
+            box-shadow: 0 0 15px rgba(0, 255, 156, 0.2);
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 22px;
+            color: #cc0000;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #cc0000;
+            padding-bottom: 10px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            line-height: 1.8;
+        }
+
+        /* BINARY DISPLAY */
+        .binary-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #00ff9c;
+            background: rgba(0, 255, 156, 0.05);
+            border-radius: 3px;
+        }
+
+        .binary-label {
+            font-size: 11px;
+            color: #00ff9c;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .binary-display {
+            font-size: 24px;
+            color: #cc0000;
+            letter-spacing: 8px;
+            text-shadow: 0 0 10px rgba(204, 0, 0, 0.6);
+            font-weight: bold;
+            word-break: break-all;
+            font-family: 'Courier New', monospace;
+        }
+
+        /* INPUT SECTION — zona de acceso destacada visualmente */
+        .input-section {
+            padding: 30px 25px;
+            border: 2px solid #cc0000;
+            background: rgba(25, 0, 0, 0.85);
+            margin: 35px 0 20px 0;
+            position: relative;
+            box-shadow: 0 0 40px rgba(204, 0, 0, 0.55), inset 0 0 20px rgba(204, 0, 0, 0.08);
+            animation: accessPulse 2.5s ease-in-out infinite;
+        }
+
+        /* Etiqueta flotante que identifica la zona de acceso */
+        .input-section::before {
+            content: '▶ TERMINAL DE ACCESO SEGURO ◀';
+            position: absolute;
+            top: -11px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #030000;
+            padding: 0 14px;
+            font-size: 10px;
+            letter-spacing: 3px;
+            color: #cc0000;
+            white-space: nowrap;
+            text-shadow: 0 0 8px rgba(204, 0, 0, 0.6);
+        }
+
+        @keyframes accessPulse {
+            0%, 100% { box-shadow: 0 0 40px rgba(204, 0, 0, 0.55), inset 0 0 20px rgba(204, 0, 0, 0.08); }
+            50%       { box-shadow: 0 0 65px rgba(204, 0, 0, 0.9),  inset 0 0 30px rgba(204, 0, 0, 0.18); }
+        }
+
+        /* Estado verde al ingresar código correcto */
+        .input-section.access-granted {
+            border-color: #00ff9c;
+            animation: accessGrantedPulse 2.5s ease-in-out infinite;
+        }
+
+        .input-section.access-granted::before {
+            content: '✔ ACCESO CONCEDIDO — SISTEMA DESBLOQUEADO';
+            color: #00ff9c;
+            text-shadow: 0 0 8px rgba(0, 255, 156, 0.6);
+        }
+
+        @keyframes accessGrantedPulse {
+            0%, 100% { box-shadow: 0 0 40px rgba(0, 255, 156, 0.55), inset 0 0 20px rgba(0, 255, 156, 0.08); }
+            50%       { box-shadow: 0 0 65px rgba(0, 255, 156, 0.9),  inset 0 0 30px rgba(0, 255, 156, 0.18); }
+        }
+
+        .input-label {
+            display: block;
+            margin-bottom: 12px;
+            font-size: 20px;
+            color: #cc0000;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 14px 18px;
+            background: #030000;
+            border: 1px solid #00ff9c;
+            color: #00ff9c;
+            font-family: 'Courier New', monospace;
+            font-size: 18px;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            box-shadow: 0 0 15px rgba(0, 255, 156, 0.6), inset 0 0 10px rgba(0, 255, 156, 0.1);
+        }
+
+        button {
+            padding: 10px 30px;
+            background: #cc0000;
+            border: 1px solid #ff0000;
+            color: #030000;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            text-transform: uppercase;
+            cursor: pointer;
+            font-weight: bold;
+            letter-spacing: 1px;
+            box-shadow: 0 0 15px rgba(204, 0, 0, 0.5);
+            transition: all 0.2s ease;
+        }
+
+        button:hover {
+            background: #ff0000;
+            box-shadow: 0 0 25px rgba(204, 0, 0, 0.8);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        /* STATUS */
+        .status {
+            padding: 15px;
+            border: 1px solid #00ff9c;
+            background: rgba(0, 20, 10, 0.4);
+            margin-top: 15px;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+        }
+
+        .status-text {
+            color: #00ff9c;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1em;
+            background: #00ff9c;
+            margin-left: 5px;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0; }
+        }
+
+        /* SUCCESS - GREEN GLOW */
+        .status-success {
+            background: rgba(0, 255, 0, 0.1);
+            border-color: #00ff00;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.6);
+        }
+
+        .status-success .status-text {
+            color: #00ff00;
+            text-shadow: 0 0 10px rgba(0, 255, 0, 0.8);
+            font-weight: bold;
+        }
+
+        /* ERROR - RED */
+        .status-error {
+            background: rgba(255, 0, 0, 0.1);
+            border-color: #ff0000;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+        }
+
+        .status-error .status-text {
+            color: #ff0000;
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.6);
+        }
+
+        /* BOTTOM PANELS */
+        .bottom-panels {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            margin: 40px 0;
+        }
+
+        .panel {
+            padding: 20px;
+            border: 1px solid #cc0000;
+            background: linear-gradient(135deg, rgba(20, 0, 0, 0.5), rgba(10, 0, 0, 0.7));
+            box-shadow: 0 0 10px rgba(204, 0, 0, 0.3);
+        }
+
+        .panel-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 16px;
+            color: #cc0000;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #cc0000;
+            padding-bottom: 8px;
+        }
+
+        .panel-content {
+            font-size: 12px;
+            color: #00ff9c;
+        }
+
+        .panel-item {
+            margin: 8px 0;
+            padding-left: 10px;
+            border-left: 2px solid #00ff9c;
+        }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            padding: 20px;
+            border-top: 1px solid #cc0000;
+            margin-top: 40px;
+            font-size: 11px;
+            color: #cc0000;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* FAILURE OVERLAY */
+        #failureOverlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            background: #000000;
+            animation: failurePulse 0.4s infinite;
+        }
+
+        @keyframes failurePulse {
+            0%, 100% { background-color: #000000; }
+            50% { background-color: #cc0000; }
+        }
+
+        .failure-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+            position: relative;
+        }
+
+        .warning-stripes-top, .warning-stripes-bottom {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            background: repeating-linear-gradient(
+                45deg,
+                #cc0000,
+                #cc0000 10px,
+                #000000 10px,
+                #000000 20px
+            );
+            animation: scrollStripes 0.5s linear infinite;
+        }
+
+        .warning-stripes-top {
+            top: 0;
+        }
+
+        .warning-stripes-bottom {
+            bottom: 0;
+        }
+
+        @keyframes scrollStripes {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(20px); }
+        }
+
+        .failure-main {
+            color: #cc0000;
+            animation: failureText 0.3s infinite;
+        }
+
+        .failure-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 80px;
+            text-shadow: 0 0 20px rgba(204, 0, 0, 0.8);
+            letter-spacing: 6px;
+            margin-bottom: 20px;
+        }
+
+        @keyframes failureText {
+            0%, 50%, 100% { color: #cc0000; text-shadow: 0 0 20px rgba(204, 0, 0, 0.8); }
+            25%, 75% { color: #ffffff; text-shadow: 0 0 20px rgba(255, 255, 255, 0.8); }
+        }
+
+        .failure-subtitle {
+            font-size: 24px;
+            margin: 20px 0;
+            color: #00ff9c;
+            text-shadow: 0 0 10px rgba(0, 255, 156, 0.6);
+            letter-spacing: 2px;
+        }
+
+        .failure-detail {
+            font-size: 16px;
+            margin: 15px 0;
+            color: #00ff9c;
+            letter-spacing: 1px;
+        }
+
+        .crack-line {
+            position: absolute;
+            background: #cc0000;
+            opacity: 0.7;
+        }
+
+        /* SCREEN SHAKE */
+        @keyframes screenShake {
+            0%, 100% { transform: translate(0, 0); }
+            10% { transform: translate(-3px, -3px); }
+            20% { transform: translate(3px, -3px); }
+            30% { transform: translate(-3px, 3px); }
+            40% { transform: translate(3px, 3px); }
+            50% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, -2px); }
+            70% { transform: translate(-2px, 2px); }
+            80% { transform: translate(2px, 2px); }
+            90% { transform: translate(-1px, -1px); }
+        }
+
+        #failureOverlay.shake {
+            animation: screenShake 0.1s, failurePulse 0.4s infinite;
+        }
+
+        /* FLASH */
+        @keyframes flashRed {
+            0%, 100% { background-color: #cc0000; opacity: 1; }
+            50% { background-color: #000000; opacity: 1; }
+        }
+
+        #failureOverlay.flashing {
+            animation: flashRed 0.08s !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="biohazard-bg">☣</div>
+
+    <div class="container">
+        <!-- HEADER -->
+        <header>
+            <img src="Umbrella-Emblem.png" class="header-img" alt="Umbrella Corporation">
+            <div class="header-subtitle">SISTEMA CENTRAL DE CONTROL · LABORATORIO SUBTERRÁNEO</div>
+        </header>
+
+        <!-- WARNING STRIPES -->
+        <div class="warning-stripes"></div>
+
+        <!-- INFO BAR -->
+        <div class="info-bar">
+            <div class="info-item">
+                <div class="info-label">ESTADO DEL SISTEMA</div>
+                <div class="info-value">OPERACIONAL</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">RELOJ DEL SISTEMA</div>
+                <div class="info-value system-clock" id="systemClock">00:00:00</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">NIVEL DE AMENAZA</div>
+                <div class="info-value">CRÍTICO</div>
+            </div>
+        </div>
+
+        <!-- MAIN TIMER -->
+        <div class="timer-section">
+            <div class="timer-label">PROTOCOLO DE CONTENCIÓN AUTOMÁTICA</div>
+            <div class="timer-display" id="timerDisplay">60:00</div>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div class="content-section">
+            <div class="section-title">Ingrese código de seguridad</div>
+
+            <p>Acceso restringido. Identifíquese con el código de autorización correspondiente para continuar con las operaciones de laboratorio.</p>
+            <p>El código está en la Fuente.</p>
+            <!-- BINARY DISPLAY -->
+            <div class="binary-section">
+                <div class="binary-display">110000001001</div>
+            </div>
+
+            <p>Este terminal mantiene protocolos de seguridad de máximo nivel. Solo personal autorizado puede acceder a los registros del VRX-Elysia y los archivos del Proyecto Nemesis.</p>
+
+            <!-- INPUT SECTION -->
+            <div class="input-section">
+                <label class="input-label"><strong>Código de Autorización:</strong></label>
+                <div class="input-group">
+                    <input type="text" id="passwordInput" placeholder="INGRESE CÓDIGO" maxlength="30">
+                    <button id="submitBtn">ENVIAR</button>
+                </div>
+                <div class="status" id="status">
+                    <div class="status-text">ESPERANDO ENTRADA<span class="cursor"></span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BOTTOM PANELS -->
+        <div class="bottom-panels">
+            <div class="panel">
+                <div class="panel-title">Estado del Sistema</div>
+                <div class="panel-content">
+                    <div class="panel-item">Laboratorio: OPERATIVO</div>
+                    <div class="panel-item">Contenedor Primario: SELLADO</div>
+                    <div class="panel-item">Generadores: FUNCIONANDO</div>
+                    <div class="panel-item">Sistema de Ventilación: ACTIVO</div>
+                </div>
+            </div>
+            <div class="panel">
+                <div class="panel-title">Nivel de Amenaza</div>
+                <div class="panel-content">
+                    <div class="panel-item">VRX-Elysia: CONTENIDO</div>
+                    <div class="panel-item">Biohazard Level: MÁXIMO</div>
+                    <div class="panel-item">Protocolos Activos: 7</div>
+                    <div class="panel-item">Sistema de Sellado: LISTO</div>
+                </div>
+            </div>
+            <div class="panel">
+                <div class="panel-title">Personal Autorizado</div>
+                <div class="panel-content">
+                    <div class="panel-item">Albert Wesker - DIRECTOR</div>
+                    <div class="panel-item">Birkin, William - INVESTIGADOR</div>
+                    <div class="panel-item">Irons, Brian - SEGURIDAD</div>
+                    <div class="panel-item">Nemesis Unit - VIGILANCIA</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        UMBRELLA CORPORATION · RESEARCH DIVISION · ©1998 · CONFIDENCIAL
+    </footer>
+
+    <!-- FAILURE OVERLAY -->
+    <div id="failureOverlay">
+        <div class="warning-stripes-top"></div>
+        <div class="failure-content">
+            <div class="failure-main">
+                <div class="failure-title">⚠ FALLA DEL SISTEMA ⚠</div>
+                <div class="failure-subtitle">CONTENCIÓN COMPROMETIDA · PROTOCOLO DE EMERGENCIA ACTIVADO</div>
+                <div class="failure-detail">VRX-Elysia LIBERADO · SELLADO AUTOMÁTICO EN CURSO · EVACUACIÓN INMEDIATA</div>
+            </div>
+        </div>
+        <div class="warning-stripes-bottom"></div>
+    </div>
+
+    <!-- EL CODIGO ES 3081 -->
+    <!-- Representación binaria: 110000001001 -->
+
+    <script>
+        // EL CODIGO ES 3081
+        // Representación binaria: 110000001001
+
+        // Configuration
+        const MAIN_TIMER_SECONDS = 3600; // 60 minutes
+        const CORRECT_CODE_ORIGINAL = "E0-2018-C17";
+        const CORRECT_CODE_NEW = "3081";
+        const FAILURE_TRIGGER_SECONDS = 30;
+        const ERROR_RESET_SECONDS = 2;
+
+        // State
+        let mainTimerInterval = null;
+        let secondsRemaining = MAIN_TIMER_SECONDS;
+        let statusElement = document.getElementById('status');
+        let inputElement = document.getElementById('passwordInput');
+        let submitBtn = document.getElementById('submitBtn');
+        let timerDisplay = document.getElementById('timerDisplay');
+        let failureOverlay = document.getElementById('failureOverlay');
+        let hiddenCountdownInterval = null;
+        let hiddenCountdownSeconds = 0;
+        let failureTriggered = false;
+        let systemClockElement = document.getElementById('systemClock');
+
+        // Start main timer
+        function startMainTimer() {
+            mainTimerInterval = setInterval(() => {
+                secondsRemaining--;
+                updateTimerDisplay();
+
+                if (secondsRemaining <= 0) {
+                    clearInterval(mainTimerInterval);
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(secondsRemaining / 60);
+            const seconds = secondsRemaining % 60;
+            timerDisplay.textContent =
+                String(minutes).padStart(2, '0') + ':' +
+                String(seconds).padStart(2, '0');
+        }
+
+        // System clock
+        function updateSystemClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            systemClockElement.textContent = hours + ':' + minutes + ':' + seconds;
+        }
+
+        setInterval(updateSystemClock, 1000);
+        updateSystemClock();
+
+        // Password submission
+        submitBtn.addEventListener('click', () => {
+            const password = inputElement.value.trim().toUpperCase();
+
+            if (password === CORRECT_CODE_ORIGINAL) {
+                showSuccess("PROTOCOLO 0 DESACTIVADO");
+            } else if (password === CORRECT_CODE_NEW) {
+                showSuccess("✔ ACCESO CONCEDIDO");
+                startHiddenCountdown();
+            } else {
+                showError("✘ ACCESO DENEGADO");
+                clearInput();
+            }
+        });
+
+        function showSuccess(message) {
+            statusElement.className = 'status status-success';
+            statusElement.innerHTML = '<div class="status-text">' + message + '</div>';
+            inputElement.disabled = true;
+            submitBtn.disabled = true;
+            // Detener el contador principal al ingresar código correcto
+            clearInterval(mainTimerInterval);
+            // Cambiar neón del contenedor de rojo a verde
+            document.querySelector('.input-section').classList.add('access-granted');
+        }
+
+        function showError(message) {
+            statusElement.className = 'status status-error';
+            statusElement.innerHTML = '<div class="status-text">' + message + '</div>';
+
+            setTimeout(() => {
+                statusElement.className = 'status';
+                statusElement.innerHTML = '<div class="status-text">ESPERANDO ENTRADA<span class="cursor"></span></div>';
+            }, ERROR_RESET_SECONDS * 1000);
+        }
+
+        function clearInput() {
+            inputElement.value = '';
+            inputElement.focus();
+        }
+
+        // Enter key to submit
+        inputElement.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                submitBtn.click();
+            }
+        });
+
+        // Hidden 60-second countdown
+        function startHiddenCountdown() {
+            hiddenCountdownSeconds = FAILURE_TRIGGER_SECONDS;
+            hiddenCountdownInterval = setInterval(() => {
+                hiddenCountdownSeconds--;
+
+                if (hiddenCountdownSeconds <= 0) {
+                    clearInterval(hiddenCountdownInterval);
+                    triggerSystemFailure();
+                }
+            }, 1000);
+        }
+
+        // System failure sequence
+        function triggerSystemFailure() {
+            if (failureTriggered) return;
+            failureTriggered = true;
+
+            // Play audio alarm
+            playAlarmSound();
+
+            // Initial flash/shake
+            performInitialFlash();
+
+            // Show overlay after brief delay
+            setTimeout(() => {
+                failureOverlay.style.display = 'flex';
+                addCrackLines();
+
+                // Periodic shakes
+                setInterval(() => {
+                    if (failureTriggered) {
+                        failureOverlay.classList.add('shake');
+                        setTimeout(() => {
+                            failureOverlay.classList.remove('shake');
+                        }, 150);
+                    }
+                }, 1200);
+            }, 500);
+        }
+
+        function performInitialFlash() {
+            let flashCount = 0;
+            const flashInterval = setInterval(() => {
+                if (flashCount % 2 === 0) {
+                    document.body.style.backgroundColor = '#cc0000';
+                } else {
+                    document.body.style.backgroundColor = '#000000';
+                }
+                flashCount++;
+
+                if (flashCount >= 24) { // 12 alternations = 24 flashes
+                    clearInterval(flashInterval);
+                    document.body.style.backgroundColor = '#030000';
+                }
+            }, 40);
+        }
+
+        function playAlarmSound() {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const now = audioContext.currentTime;
+            const duration = 300;
+
+            // Create two oscillators for alternating frequency
+            const osc1 = audioContext.createOscillator();
+            const osc2 = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+
+            osc1.type = 'sawtooth';
+            osc2.type = 'sawtooth';
+            osc1.frequency.value = 880;
+            osc2.frequency.value = 440;
+
+            // Gain envelope
+            gain.gain.setValueAtTime(0.3, now);
+            gain.gain.exponentialRampToValueAtTime(0.01, now + duration);
+
+            osc1.connect(gain);
+            osc2.connect(gain);
+            gain.connect(audioContext.destination);
+
+            // Alternate between frequencies
+            const switchInterval = 0.15;
+            for (let i = 0; i < duration / switchInterval; i++) {
+                if (i % 2 === 0) {
+                    osc1.frequency.setValueAtTime(880, now + i * switchInterval);
+                    osc2.frequency.setValueAtTime(0, now + i * switchInterval);
+                } else {
+                    osc1.frequency.setValueAtTime(0, now + i * switchInterval);
+                    osc2.frequency.setValueAtTime(440, now + i * switchInterval);
+                }
+            }
+
+            osc1.start(now);
+            osc2.start(now);
+            osc1.stop(now + duration);
+            osc2.stop(now + duration);
+        }
+
+        function addCrackLines() {
+            const failureContent = document.querySelector('.failure-content');
+            const crackInterval = setInterval(() => {
+                if (!failureTriggered) return;
+
+                const width = Math.random() * 200 + 50;
+                const height = Math.random() * 100 + 10;
+                const left = Math.random() * (window.innerWidth - width);
+                const top = Math.random() * (window.innerHeight - height);
+
+                const crack = document.createElement('div');
+                crack.className = 'crack-line';
+                crack.style.width = width + 'px';
+                crack.style.height = height + 'px';
+                crack.style.left = left + 'px';
+                crack.style.top = top + 'px';
+                crack.style.transform = 'rotate(' + (Math.random() * 360) + 'deg)';
+
+                failureOverlay.appendChild(crack);
+
+                setTimeout(() => crack.remove(), 800);
+            }, 400);
+        }
+
+        // Initialize
+        startMainTimer();
+        updateTimerDisplay();
+        inputElement.focus();
+    </script>
+</body>
+</html>
